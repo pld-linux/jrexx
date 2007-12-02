@@ -1,0 +1,102 @@
+<project name="jrexx" default="dist">
+  <description>
+    This build file is used to compile and build jrexx.
+  </description>
+
+  <target name="init"/>
+
+  <!-- directory definition -->
+  <property name="src" 			value="${basedir}/src"/>
+  <property name="doc" 			value="${basedir}/doc"/>
+  <property name="jdoc" 		value="${basedir}/jdoc"/>
+  <property name="bin" 			value="${basedir}/bin"/>
+  <property name="ext" 			value="${basedir}/ext"/>
+  <property name="examples"     	value="${basedir}/examples"/>
+  <property name="test"                 value="${basedir}/test"/>
+  <property name="config" 		value="${basedir}/config"/>
+  <property name="archive" 		value="${basedir}/archive"/>
+  <property name="externals.dir" 	value="${basedir}/externals"/>
+  <property name="output" 		value="${basedir}/output"/>
+  <property name="tmp" 	                value="${output}/tmp"/>
+  <property name="tmp.doc"              value="${output}/tmp/doc"/>
+  <property name="build" 		value="${output}/build"/>
+  <property name="build.stub"  	        value="${build}/stub"/>
+  <property name="dist" 		value="${output}/dist"/>
+
+    <!--User properties file -->
+  <property file="${basedir}/build.properties"/>
+
+  <property name="dist.lib"  		value="${dist}/lib"/>
+  <property name="dist.doc"  		value="${dist}/doc"/>
+  <property name="dist.jdoc"  	        value="${dist}/jdoc"/>
+  <property name="dist.etc"  		value="${dist}/etc"/>
+  <property name="dist.bin"  		value="${dist}/bin"/>
+  <property name="dist.config"          value="${dist}/config"/>
+  <property name="dist.examples"        value="${dist}/examples"/>
+  <property name="dist.test"            value="${dist}/test"/>
+  <property name="build.stub"  	        value="${build}/stub"/>
+
+
+  <!-- compile all compile.** targets -->
+  <target name="compile"
+    description="--> compile XAPool">
+    <antcall target="compile.base"/>
+  </target>
+
+  <!-- compile all java classes -->
+  <target name="compile.base">
+    <mkdir dir="${build}/classes"/>
+    <javac
+      srcdir="${src}"
+      destdir="${build}/classes"
+      deprecation="${compiler.deprecation}"
+      debug="${compiler.debug}"
+      nowarn="${compiler.nowarn}"
+      optimize="${compiler.optimize}">
+      <include name="**/*.java"/>
+    </javac>
+  </target>
+
+
+  <!-- create jrexx distribution -->
+  <target name="dist" depends="init, compile"
+    description="--> create a distribution of jrexx">
+    <mkdir dir="${dist}"/>
+    <antcall target="jar"/>
+    <antcall target="jdoc"/>
+  </target>
+
+
+
+  <!-- populate distribution lib directory with required archives -->
+  <target name="jar" depends="init">
+    <mkdir dir="${dist.lib}"/>
+    <jar jarfile="${dist.lib}/jrexx-1.1.1.jar" basedir="${build}/classes">
+      <include name="**/*.class"/>
+    </jar>
+  </target>
+
+
+  <!-- create javadoc  documentation -->
+  <target name="jdoc" depends="init"
+    description="--> generate Javadoc">
+    <mkdir dir="${dist.jdoc}"/>
+    <javadoc
+      packagenames="com.karneim.*"
+      destdir="${dist.jdoc}"
+      windowtitle="jrexx Developer Documentation"
+      author="true" version="true" use="true" >
+      <doctitle><![CDATA[<h1>jrexx Developer Documentation</h1>]]></doctitle>
+      <sourcepath>
+        <pathelement path="${src}"/>
+      </sourcepath>
+    </javadoc>
+  </target>
+
+  <!-- clean all directory and files created by various targets -->
+  <target name="clean" depends="init"
+    description="--> delete generated files">
+    <delete dir="${output}" />
+  </target>
+
+ </project>
