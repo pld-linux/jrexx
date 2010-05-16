@@ -14,6 +14,7 @@ BuildRequires:	ant >= 0:1.5.4
 BuildRequires:	jpackage-utils >= 0:1.5.32
 BuildRequires:	rpm-javaprov
 BuildRequires:	rpmbuild(macros) >= 1.300
+BuildRequires:	unzip
 %if %(locale -a | grep -q '^en_US$'; echo $?)
 BuildRequires:	glibc-localedb-all
 %endif
