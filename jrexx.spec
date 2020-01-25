@@ -1,4 +1,3 @@
-%include	/usr/lib/rpm/macros.java
 Summary:	Automaton based regular expression API for Java
 Summary(pl.UTF-8):	API wyrażeń regularnych dla Javy oparte na automatach
 Name:		jrexx
